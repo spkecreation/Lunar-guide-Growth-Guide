@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Instagram Growth Guide — Product Landing</title>
+  <meta name="description" content="Step-by-step Instagram growth guide — sample landing page with liquid glass UI and WhatsApp checkout." />
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --accent1: #7ce3cf; /* mint */
+      --accent2: #caa7ff; /* lavender */
+      --accent3: #ffb6c1; /* baby pink */
+      --glass-alpha: 0.18;
+      --glass-border: rgba(255,255,255,0.12);
+      --glass-glow: rgba(124,227,207,0.12);
+      --text: #e9eef8;
+      --muted: #b7c0d6;
+      --card-radius: 18px;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(202,167,255,0.08), transparent),
+                  radial-gradient(1000px 600px at 90% 90%, rgba(255,182,193,0.06), transparent),
+                  linear-gradient(180deg, #071126 0%, #07121a 45%, #081026 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* Floating colorful blobs for mood */
+    .blob {
+      position:absolute;
+      filter: blur(30px) saturate(1.1);
+      opacity:0.85;
+      mix-blend-mode:screen;
+      will-change: transform;
+      pointer-events:none;
+    }
+    .blob.a{ width:420px;height:420px; left:-8%; top:-6%; background:linear-gradient(135deg,var(--accent2),var(--accent3)); animation: floatA 12s ease-in-out infinite; transform-origin:center; }
+    .blob.b{ width:360px;height:360px; right:-6%; bottom:-10%; background:linear-gradient(135deg,var(--accent1),var(--accent2)); animation: floatB 14s ease-in-out infinite; }
+    @keyframes floatA { 0%{transform:translateY(0) scale(1)} 50%{transform:translateY(28px) scale(1.03)} 100%{transform:translateY(0) scale(1)} }
+    @keyframes floatB { 0%{transform:translateY(0) scale(1)} 50%{transform:translateY(-34px) scale(1.05)} 100%{transform:translateY(0) scale(1)} }
+
+    /* Page layout */
+    header{
+      position:relative;
+      padding:32px clamp(18px,5vw,48px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      z-index:10;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .brand .logo{
+      width:56px;height:56px;border-radius:14px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:grid;place-items:center;
+      box-shadow: 0 6px 18px rgba(5,8,18,0.6), inset 0 -6px 18px rgba(255,255,255,0.03);
+      font-weight:800;color:#063; font-size:20px;
+      filter: drop-shadow(0 6px 20px rgba(100,0,200,0.08));
+    }
+    .brand h1{ margin:0;font-size:18px; letter-spacing:-0.2px;}
+    .brand p{ margin:0;font-size:12px;color:var(--muted); }
+
+    nav{ display:flex; align-items:center; gap:12px; }
+    .nav-btn{
+      padding:8px 14px;border-radius:12px;border:1px solid transparent;background:transparent;color:var(--muted);
+      font-weight:600;font-size:14px;cursor:pointer;
+    }
+    .nav-btn.ghost:hover{ color:var(--text); transform:translateY(-2px); }
+
+    /* Hero */
+    .hero{
+      padding: clamp(28px,6vw,64px);
+      display:grid;
+      grid-template-columns: 1fr 460px;
+      gap:32px;
+      align-items:center;
+      max-width:1200px;
+      margin:0 auto;
+      position:relative;
+      z-index:5;
+    }
+
+    .hero-left{
+      max-width:720px;
+    }
+    .eyebrow{
+      display:inline-block;
+      font-weight:700;
+      padding:8px 12px;border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      color:var(--accent1); border:1px solid rgba(255,255,255,0.03);
+      font-size:13px;
+      backdrop-filter: blur(6px);
+    }
+    h2{
+      font-size: clamp(28px, 4.5vw, 44px);
+      line-height:1.02;
+      margin:18px 0 12px 0;
+      letter-spacing:-0.6px;
+      background: linear-gradient(180deg, #fff, #dfe8ff 60%);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    p.lead{ margin:0 0 22px 0; color:var(--muted); font-size:16px; max-width:64ch; }
+
+    /* Glass card / product */
+    .glass {
+      border-radius: var(--card-radius);
+      background: linear-gradient(180deg, rgba(255,255,255,var(--glass-alpha)), rgba(255,255,255,0.03));
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6), 0 2px 8px rgba(12,16,26,0.35);
+      backdrop-filter: blur(10px) saturate(1.2);
+      padding:18px;
+      overflow:visible;
+      position:relative;
+    }
+
+    /* Product details */
+    .product-card{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:stretch;
+    }
+    .product-cover{
+      height:230px;border-radius:14px;overflow:hidden;position:relative;
+      display:grid;place-items:center;
+      background:
+        radial-gradient(600px 200px at 10% 10%, rgba(255,255,255,0.03), transparent),
+        linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .product-cover img{ width:100%; height:100%; object-fit:cover; display:block; filter:contrast(1.02) saturate(1.05); }
+
+    .badge{ display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;font-size:13px;background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:#062; box-shadow:0 6px 18px rgba(0,0,0,0.35); }
+
+    .price-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .price{ font-weight:800; font-size:20px; letter-spacing:-0.6px; }
+    .old-price{ color:var(--muted); text-decoration:line-through; font-size:13px; margin-left:8px; }
+
+    /* Buttons with sheen */
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 16px; border-radius:12px; cursor:pointer; user-select:none;
+      border:1px solid rgba(255,255,255,0.06); font-weight:700;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      transition: transform .18s ease, box-shadow .18s ease;
+      position:relative; overflow:hidden;
+    }
+    .btn:before{
+      content:""; position:absolute; left:-60%; top:-30%; width:160%; height:120%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02), rgba(255,255,255,0.08));
+      transform: skewX(-18deg) translateX(0);
+      transition: transform .9s cubic-bezier(.2,.9,.2,1);
+      pointer-events:none; opacity:0.6;
+    }
+    .btn:hover{ transform:translateY(-6px); box-shadow: 0 10px 30px rgba(2,6,23,0.6); }
+    .btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--accent1); }
+    .btn.primary{ background: linear-gradient(90deg,var(--accent1),var(--accent2)); color:#021; border:none; }
+    .btn.primary:before{ opacity:0.12; transform:translateX(120%); }
+
+    /* Card list (Why buy + Features) */
+    .features{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:14px;
+    }
+    .feature{
+      padding:14px;border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      font-size:14px;color:var(--muted);
+    }
+    .feature h4{ margin:0 0 8px 0; font-size:15px; color:var(--text); }
+
+    /* Right column: product card + small details */
+    .right-panel{
+      display:flex; flex-direction:column; gap:18px;
+      position:relative;
+    }
+
+    /* Why buy section (full width lower) */
+    .why{
+      max-width:1200px; margin:30px auto; padding:24px; display:grid; gap:18px; grid-template-columns:1fr 360px;
+    }
+    .why p{ color:var(--muted); line-height:1.6; }
+
+    /* Contact footer */
+    footer{
+      max-width:1200px; margin:40px auto; padding:24px; display:flex; gap:12px; align-items:center; justify-content:space-between;
+    }
+    .small{ font-size:13px; color:var(--muted); }
+
+    /* Modal for product details */
+    .modal-backdrop{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:30; }
+    .modal-backdrop.show{ display:flex; }
+    .modal{
+      width:min(920px,95%); border-radius:16px; padding:22px; background:linear-gradient(180deg, rgba(18,24,40,0.98), rgba(8,10,18,0.92));
+      border:1px solid rgba(255,255,255,0.04); box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    }
+
+    /* Tiny UI niceties */
+    .muted{ color:var(--muted); font-size:13px; }
+    .center{ text-align:center; }
+    .chip{ display:inline-block; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.02); color:var(--muted); font-weight:600; font-size:13px; }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{ grid-template-columns:1fr; padding:28px 18px; gap:18px; }
+      .why{ grid-template-columns:1fr; padding:18px; }
+      .features{ grid-template-columns:1fr; }
+      .product-cover{ height:200px; }
+    }
+
+    /* subtle focus/keyboard */
+    .btn:focus{ outline:3px solid rgba(124,227,207,0.12); outline-offset:4px; }
+
+    /* small animated "cursor/pulse" on buy button for attention */
+    .pulse {
+      position:absolute; right:18px; top:18px; width:10px;height:10px;border-radius:50%;
+      background:var(--accent1); box-shadow:0 6px 20px rgba(124,227,207,0.15); animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse { 0%{transform:scale(.9);opacity:1} 70%{transform:scale(1.8);opacity:0} 100%{opacity:0} }
+
+    /* small animated border sheen on the hero-left */
+    .sheen {
+      position:absolute; inset:0; pointer-events:none; border-radius:12px;
+      background: linear-gradient(120deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0) 70%);
+      transform: translateX(-120%); animation:sheen 4.8s linear infinite;
+    }
+    @keyframes sheen { from{transform: translateX(-120%)} to{transform: translateX(120%)} }
+
+  </style>
+</head>
+<body>
+
+  <!-- decorative blobs -->
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+
+  <header>
+    <div class="brand">
+      <div class="logo">IG</div>
+      <div>
+        <h1 style="margin:0;font-size:16px">Insta Lift — Growth Guide</h1>
+        <p style="margin:0">Step-by-step growth & content playbook</p>
+      </div>
+    </div>
+
+    <nav aria-label="top navigation">
+      <button class="nav-btn ghost" onclick="scrollToSection('why')">Why this guide</button>
+      <button class="nav-btn ghost" onclick="scrollToSection('product')">Product</button>
+      <button class="nav-btn ghost" onclick="scrollToSection('contact')">Contact</button>
+      <button class="nav-btn" onclick="openWhatsAppQuick()">Buy / WhatsApp</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" role="region" aria-labelledby="hero-title">
+      <div class="hero-left">
+        <span class="eyebrow">Digital guide • Low pricing • Actionable</span>
+        <h2 id="hero-title">Grow your new Instagram account — step-by-step, with templates & captions</h2>
+        <p class="lead">A compact, tested playbook for creators and micro-businesses. Visual templates, posting cadence, caption formulas, hashtag strategies, and a daily 30-minute routine — made for busy beginners.</p>
+
+        <div style="display:flex;gap:12px;align-items:center;margin-top:12px;">
+          <button class="btn primary" onclick="openProductModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path d="M3 12h18" stroke="rgba(2,6,23,0.9)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            View Guide
+          </button>
+          <button class="btn" onclick="openWhatsAppQuick()">Message on WhatsApp</button>
+          <div style="margin-left:auto">
+            <span class="chip">New accounts • Themes: Lavender, Mint, Pink</span>
+          </div>
+        </div>
+
+        <div style="position:relative;margin-top:18px;">
+          <div class="glass" style="padding:12px; display:flex; gap:12px; align-items:center;">
+            <div style="flex:0 0 56px;">
+              <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent2),var(--accent3));display:grid;place-items:center;font-weight:800;color:#021">GD</div>
+            </div>
+            <div>
+              <div style="font-weight:800">What you get</div>
+              <div class="muted" style="margin-top:4px">Intro page • Product purchasing page • Why buy page • Contact — you provide photos, we'll write copy if needed.</div>
+            </div>
+            <div style="margin-left:auto">
+              <div class="pulse" title="Popular"></div>
+            </div>
+            <div class="sheen" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="features" style="margin-top:18px;">
+          <div class="feature">
+            <h4>Designed for new accounts</h4>
+            Templates & posting flow tailored to fresh profiles.
+          </div>
+          <div class="feature">
+            <h4>Low price, big value</h4>
+            Actionable tasks you can execute in 30 minutes daily.
+          </div>
+          <div class="feature">
+            <h4>Visual-first</h4>
+            Color palettes (lavender, mint, baby pink) and cover mockups included.
+          </div>
+          <div class="feature">
+            <h4>Delivery</h4>
+            PDF + editable caption pack. Order via WhatsApp — no payment required on the site.
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="right-panel">
+        <div class="glass product-card" id="product" role="region" aria-label="Product card">
+          <div class="product-cover">
+            <!-- placeholder cover -->
+            <img src="data:image/svg+xml;utf8,
+              <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'>
+                <defs>
+                  <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+                    <stop offset='0' stop-color='%23caa7ff'/>
+                    <stop offset='1' stop-color='%237ce3cf'/>
+                  </linearGradient>
+                </defs>
+                <rect rx='14' width='100%' height='100%' fill='url(%23g)'/>
+                <text x='50%' y='40%' text-anchor='middle' font-family='Inter, Arial' font-size='56' fill='rgba(2,6,23,0.9)'>Instagram Growth Guide</text>
+                <text x='50%' y='60%' text-anchor='middle' font-family='Inter, Arial' font-size='20' fill='rgba(2,6,23,0.7)'>Templates • Captions • Strategy</text>
+              </svg>" alt="Guide cover" />
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div class="badge">Starter • Digital</div>
+              <div style="margin-top:8px;font-weight:800;font-size:18px">Insta Lift — Starter Pack</div>
+              <div class="muted" style="margin-top:6px">Perfect for new creators and small businesses</div>
+            </div>
+
+            <div style="text-align:right">
+              <div class="price-row" style="justify-content:flex-end;">
+                <div>
+                  <div class="price">₹299</div>
+                  <div class="old-price">₹599</div>
+                </div>
+              </div>
+              <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+                <button class="btn primary" onclick="buyNow('Insta Lift — Starter Pack')">Buy via WhatsApp</button>
+                <button class="btn" onclick="openProductModal()">See details</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+            <div class="chip">PDF guide</div>
+            <div class="chip">Caption pack</div>
+            <div class="chip">3 visual templates</div>
+          </div>
+
+        </div>
+
+        <div class="glass" style="padding:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-weight:800">Order flow</div>
+              <div class="muted" style="margin-top:6px">Click buy → open WhatsApp → confirm details → we deliver guide via email / drive link.</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:800">You provide:</div>
+              <div class="muted">Photos (optional)</div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+    </section>
+
+    <section id="why" class="why">
+      <div class="glass" style="padding:22px;">
+        <h3 style="margin-top:0">Why this guide works</h3>
+        <p>Designed specifically for new Instagram accounts that need a clear start-to-finish plan. Instead of generic advice, this guide gives:
+        <ul style="color:var(--muted);line-height:1.6">
+          <li>Daily micro-tasks so progress is consistent.</li>
+          <li>Post-by-post caption formulas that convert attention into follows.</li>
+          <li>Visual templates in 3 color themes: lavender, mint, baby pink — pick one and stay consistent.</li>
+        </ul></p>
+
+        <p class="muted">Example structure included in the guide: Intro page • Product purchasing page • Why should you buy page • Contact — full-ready copy and structure so you can launch fast.</p>
+
+      </div>
+
+      <aside class="glass" style="padding:20px;">
+        <h4 style="margin:0 0 8px 0">Want us to write content?</h4>
+        <p class="muted" style="margin:0 0 10px 0">Yes — if you prefer, tell us you'll provide photos and we'll write the copy and headlines for the landing pages.</p>
+        <div style="display:flex;gap:8px;">
+          <button class="btn" onclick="openWhatsAppQuick()">I'll provide photos</button>
+          <button class="btn ghost" onclick="openProductModal()">Show example</button>
+        </div>
+      </aside>
+    </section>
+
+    <section id="product-modal-anchor" aria-hidden="true"></section>
+  </main>
+
+  <!-- modal -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document" aria-labelledby="modalTitle">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+        <div>
+          <h3 id="modalTitle" style="margin:0">Insta Lift — Starter Pack</h3>
+          <div class="muted" style="margin-top:6px">A full starter kit for new Instagram accounts</div>
+        </div>
+        <div><button class="btn" onclick="closeProductModal()">Close</button></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 260px;gap:18px;margin-top:16px;">
+        <div>
+          <h4 style="margin:6px 0 10px 0">What's inside</h4>
+          <ul style="color:var(--muted);line-height:1.8">
+            <li>Intro page copy + layout suggestions.</li>
+            <li>Product purchasing page copy and button examples (WhatsApp flow).</li>
+            <li>"Why should you buy" page — pain points + benefits + social proof templates.</li>
+            <li>30 caption formulas + hashtag clusters.</li>
+            <li>3 aesthetic visual templates (mockups included).</li>
+            <li>Editable prompts to rebrand the guide to your style.</li>
+          </ul>
+
+          <h4 style="margin-top:10px;margin-bottom:6px">Delivery & support</h4>
+          <p class="muted">We deliver a PDF + editable text pack. Need custom copy? Select the option when messaging us on WhatsApp.</p>
+
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="border-radius:12px;padding:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.03);">
+            <div style="font-weight:800">Price</div>
+            <div style="font-size:20px;margin-top:6px">₹299 <span class="muted" style="font-size:13px;margin-left:8px">was ₹599</span></div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="btn primary" onclick="buyNow('Insta Lift — Starter Pack (Detailed)')">Buy via WhatsApp</button>
+            <button class="btn" onclick="openWhatsAppQuick()">Message seller</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer id="contact">
+    <div>
+      <div style="font-weight:800">Get in touch</div>
+      <div class="small muted">Prefer WhatsApp orders — quick replies during working hours.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="btn" onclick="openWhatsAppQuick()">Order on WhatsApp</button>
+      <div class="small muted">Or email us at <span style="color:var(--accent2)">youremail@example.com</span></div>
+    </div>
+  </footer>
+
+  <script>
+    // -- Helper: scroll to section
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+
+    // -- Modal controls
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    function openProductModal(){
+      modalBackdrop.classList.add('show');
+      modalBackdrop.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeProductModal(){
+      modalBackdrop.classList.remove('show');
+      modalBackdrop.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+    modalBackdrop.addEventListener('click', (e)=> {
+      if(e.target === modalBackdrop) closeProductModal();
+    });
+
+    // -- WhatsApp buy flow
+    // Replace YOUR_PHONE_NUMBER with your number (country code + number, no + or 00). e.g. 919812345678
+    const SELLER_PHONE = 'YOUR_PHONE_NUMBER';
+
+    function buyNow(itemName){
+      const qty = 1;
+      const msg = encodeURIComponent(`Hi! I want to buy "${itemName}". Qty: ${qty}. Please share payment/delivery details and next steps.`);
+      const url = `https://wa.me/${SELLER_PHONE}?text=${msg}`;
+      window.open(url, '_blank');
+    }
+
+    function openWhatsAppQuick(){
+      const msg = encodeURIComponent('Hi! I am interested in the Instagram Growth Guide. Please share details and how to order.');
+      window.open(`https://wa.me/${SELLER_PHONE}?text=${msg}`, '_blank');
+    }
+
+    // -- Tiny accessibility: close modal on Escape
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && modalBackdrop.classList.contains('show')) closeProductModal();
+   });
+
+    // -- Tiny touch of dynamic color shift based on time (optional, aesthetic)
+    (function dynamicAccent(){
+      const h = new Date().getHours();
+      const root = document.documentElement;
+      if(h >= 18 || h < 6){
+        // evening: more lavender
+        root.style.setProperty('--accent1','#9eead6');
+        root.style.setProperty('--accent2','#caa7ff');
+        root.style.setProperty('--accent3','#ffb6c1');
+      } else {
+        // day: a tad brighter
+        root.style.setProperty('--accent1','#5ef6d2');
+        root.style.setProperty('--accent2','#b28bff');
+        root.style.setProperty('--accent3','#ffc4d1');
+      }
+    })();
+  </script>
+</body>
+</html>
