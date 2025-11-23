@@ -27,9 +27,7 @@
         html,body{
             margin-top: 25px;
             margin-bottom: 25px;
-            /* border: solid red; */
             height:100%;
-            /* margin:0; */
             font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
             background:var(--bg);
             color:var(--text);
@@ -164,8 +162,6 @@
             align-items:center;
             justify-content:space-between;
             margin-top: 40px;
-
-
         }
         .small{ font-size:13px; color:var(--muted); }
 
@@ -177,21 +173,136 @@
             border:1px solid var(--border); box-shadow:0 10px 25px rgba(0,0,0,0.1);
         }
 
-        /* Responsive */
+        
+        /* === DISCOUNT SECTION STYLES === */
+        .discount-section {
+            padding: 0 16px;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .discount{
+            width: 100%; 
+            height: auto; 
+            background-color: var(--accent-light);
+            color: var(--text); 
+            box-shadow: none; 
+            border: 1px solid var(--border); 
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: row; 
+            justify-content: center; 
+            align-items: center;
+            padding: 15px 20px; 
+            font-size: 16px; 
+            animation: floating-pulse 3s ease-in-out infinite;
+        }
+
+        .discount span{
+            font-size: 180%; 
+            font-weight: bolder;
+            color: var(--accent1); 
+            padding: 0 5px;
+            line-height: 1;
+        }
+
+        /* Keyframe Animation: Gentle pulse in size and shadow */
+        @keyframes floating-pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0.0);
+            }
+            50% {
+                transform: scale(1.01);
+                opacity: 0.98;
+                box-shadow: 0 0 10px rgba(56, 161, 105, 0.4); 
+            }
+        }
+        /* === END DISCOUNT SECTION STYLES === */
+
+
+        /* === RESPONSIVE MEDIA QUERIES (ENHANCED) === */
+        
+        /* Tablet/Medium Screens (Below 980px) */
         @media (max-width:980px){
-            .hero{ grid-template-columns:1fr; padding:30px 16px; gap:30px; }
-            .why-grid{ grid-template-columns:1fr; }
-            .features{ grid-template-columns:1fr; }
+            .hero{ 
+                grid-template-columns:1fr; 
+                padding:30px 16px; 
+                gap:30px; 
+            }
+            .why-grid{ 
+                grid-template-columns:1fr; 
+            }
+            .features{ 
+                grid-template-columns:1fr; 
+            }
+            
+            /* Center the product card when it becomes the only column */
+            .right-panel {
+                order: -1; /* Place the product card above the description on mobile */
+            }
+
+            /* Make button groups full width and stacked for better tapping */
+            .hero-left > div:nth-child(4) { 
+                flex-direction: column;
+                gap: 10px;
+            }
+            .hero-left > div:nth-child(4) .btn {
+                width: 100%;
+            }
+
+            /* Ensure modal content stacks */
+            .modal > div:nth-child(2) {
+                grid-template-columns: 1fr;
+            }
         }
+        
+        /* Mobile Screens (Below 600px) */
         @media (max-width:600px){
-            header{ flex-direction: column; gap:15px; }
-            nav{ flex-wrap: wrap; justify-content: center; }
-            footer{ flex-direction: column; align-items: flex-start; gap:15px; }
-            footer > div:last-child { align-self: stretch; display: flex; flex-direction: column; gap: 8px;}
+            /* Header adjustments */
+            header{ 
+                flex-direction: column; 
+                gap:15px; 
+            }
+            nav{ 
+                flex-wrap: wrap; 
+                justify-content: center; 
+                width: 100%;
+            }
+            
+            /* Footer adjustments */
+            footer{ 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap:15px; 
+            }
+            footer > div:last-child { 
+                align-self: stretch; 
+                display: flex; 
+                flex-direction: column; 
+                gap: 8px;
+            }
+            
+            /* Discount box stacks vertically for small screens */
+            .discount {
+                flex-direction: column;
+                padding: 15px 10px;
+                font-size: 14px;
+            }
+            .discount span {
+                font-size: 150%;
+                display: block; /* Ensures it takes full line */
+                margin: 5px 0;
+            }
+            
+            /* Features list cleanup */
+            .features{ 
+                grid-template-columns:1fr; 
+            }
         }
-        .below{
-            height: 30px;
-        }
+        /* === END RESPONSIVE MEDIA QUERIES === */
     </style>
 </head>
 <body>
@@ -273,11 +384,11 @@
                             <div style="margin-top:8px;font-weight:700;font-size:18px">Insta Lift — Starter Pack</div>
                         </div>
                         <div style="text-align:right">
-                            <div class="price">₹199</div>
+                            <div class="price">₹299</div>
                         </div>
                     </div>
                     <div style="display:flex;justify-content:flex-end;">
-                         <div class="old-price">Was ₹499</div>
+                           <div class="old-price">Was ₹599</div>
                     </div>
 
 
@@ -300,30 +411,35 @@
                 </div>
             </aside>
         </section>
-
-        <section id="why" class="why">
-            <div class="why-grid">
-                <div class="card" style="padding:20px;">
-                    <h3 style="margin-top:0">Why this guide works</h3>
-                    <p>Designed specifically for **new Instagram accounts** that need a clear, actionable plan. We cut the fluff and deliver:</p>
-                    <ul style="padding-left:20px; margin: 10px 0 20px 0;">
-                        <li>**Daily Micro-Tasks:** Consistent progress with a 30-minute daily routine.</li>
-                        <li>**Post-by-Post Formulas:** Caption templates that convert attention into genuine follows.</li>
-                        <li>**Visual Consistency:** Templates in 3 clean color themes (Lavender, Mint, Pink).</li>
-                    </ul>
-
-                    <div class="muted">You get the full structure and copy outlines, allowing for a fast launch.</div>
-                </div>
-
-                <div class="card" style="padding:20px;">
-                    <h4 style="margin:0 0 10px 0">Need Content Written?</h4>
-                    <p class="muted" style="margin:0 0 15px 0">If you provide the photos, we can write the copy and headlines for your landing page and initial posts as a small custom service.</p>
-                    <button class="btn primary" onclick="openWhatsAppQuick()">Discuss Custom Copy</button>
-                </div>
-            </div>
-        </section>
-
     </main>
+    
+    <div class="discount-section">
+        <div class="discount">
+            Extra <span>Rs. 50</span> off for first 10 customers — Buy now!
+        </div>
+    </div>
+    <section id="why" class="why">
+        <div class="why-grid">
+            <div class="card" style="padding:20px;">
+                <h3 style="margin-top:0">Why this guide works</h3>
+                <p>Designed specifically for **new Instagram accounts** that need a clear, actionable plan. We cut the fluff and deliver:</p>
+                <ul style="padding-left:20px; margin: 10px 0 20px 0;">
+                    <li>**Daily Micro-Tasks:** Consistent progress with a 30-minute daily routine.</li>
+                    <li>**Post-by-Post Formulas:** Caption templates that convert attention into genuine follows.</li>
+                    <li>**Visual Consistency:** Templates in 3 clean color themes (Lavender, Mint, Pink).</li>
+                </ul>
+
+                <div class="muted">You get the full structure and copy outlines, allowing for a fast launch.</div>
+            </div>
+
+            <div class="card" style="padding:20px;">
+                <h4 style="margin:0 0 10px 0">Need Content Written?</h4>
+                <p class="muted" style="margin:0 0 15px 0">If you provide the photos, we can write the copy and headlines for your landing page and initial posts as a small custom service.</p>
+                <button class="btn primary" onclick="openWhatsAppQuick()">Discuss Custom Copy</button>
+            </div>
+        </div>
+    </section>
+
 
     <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
         <div class="modal" role="document" aria-labelledby="modalTitle">
@@ -419,4 +535,3 @@
     </script>
 </body>
 </html>
-
